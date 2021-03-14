@@ -26,22 +26,25 @@ var svg = d3
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
 
-// Load data from hours-of-tv-watched.csv
+// Load data 
 d3.csv("/assets/data/data.csv").then(function(healthData) {
 
-  // Print the tvData
+  // Print data
   console.log(healthData);
 
-  // Cast the hours value to a number for each piece of tvData
+  // Cast the value to a number for each piece 
   healthData.forEach(function(data) {
-    data.hours = +data.hours;
+    data.poverty = +data.poverty;
+    data.povertyMoe = +data.povertyMoe;
+    data.obesity = +data.obesity;
+    //additional things
   });
 
   var barSpacing = 10; // desired space between each bar
   var scaleY = 10; // 10x scale on rect height
 
   // Create a 'barWidth' variable so that the bar chart spans the entire chartWidth.
-  var barWidth = (chartWidth - (barSpacing * (tvData.length - 1))) / healthData.length;
+  var barWidth = (chartWidth - (barSpacing * (healthData.length - 1))) / healthData.length;
 
   // @TODO
   // Create code to build the bar chart using the tvData.
@@ -51,7 +54,7 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .append("rect")
     .classed("bar", true)
     .attr("width", d => barWidth)
-    .attr("height", d => d.hours * scaleY)
+    .attr("height", d => d.poverty * scaleY)
     .attr("x", (d, i) => i * (barWidth + barSpacing))
     .attr("y", d => chartHeight - d.hours * scaleY);
 }).catch(function(error) {
