@@ -40,14 +40,16 @@ var chartGroup = svg.append("g")
 d3.csv("/assets/data/data.csv").then(function(healthData) {
 
   // Print data
-  console.log(healthData);
+  //console.log(healthData);
 
-  // Cast the value to a number for each piece 
+  // Cast the value to a number for number pieces 
   healthData.forEach(function(data) {
     data.poverty = +data.poverty;
     //data.povertyMoe = +data.povertyMoe;
     data.obesity = +data.obesity;
-    //additional things
+    data.abbr = data.abbr;
+    
+    console.log(abbr);
   });
   // scale x to chart width
     var xScale = d3.scaleLinear()
@@ -73,6 +75,7 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .attr("transform", `translate(0, ${chartHeight})`)
     .call(bottomAxis);
 
+  
     // Create code to build the chart
   chartGroup.selectAll(".dot")
     .data(healthData)
@@ -85,6 +88,15 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .style("fill", "#009999")
     //.attr("width", d => chartWidth -xScale(d.poverty))
     //.attr("height", d => chartHeight - yScale(d.obesity));
+
+  // Code to creat the dot labels
+  chartGroup.selectAll("text")
+    .data(healthData)
+    .enter()
+    .append("text")
+    .attr("x", function (d) { return xScale(d.poverty); } )
+    .attr("y", function (d) { return yScale(d.obesity); } )
+    .text( function(d) {return d.abbr})
 
 }).catch(function(error) {
   console.log(error);
