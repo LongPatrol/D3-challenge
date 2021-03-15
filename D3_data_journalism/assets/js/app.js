@@ -21,6 +21,21 @@ var svg = d3
   .attr("height", svgHeight)
   .attr("width", svgWidth);
 
+// scale y to chart height
+var yScale = d3.scaleLinear()
+  .domain([0, d3.max(dataArray)])
+  .range([chartHeight, 0]);
+
+// scale x to chart width
+var xScale = d3.scaleBand()
+  .domain(dataCategories)
+  .range([0, chartWidth])
+  .padding(0.05);
+
+// create axes
+var yAxis = d3.axisLeft(yScale);
+var xAxis = d3.axisBottom(xScale);
+
 // Append a group to the SVG area and shift ('translate') it to the right and down to adhere
 // to the margins set in the "chartMargin" object.
 var chartGroup = svg.append("g")
@@ -40,23 +55,22 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     //additional things
   });
 
-  var barSpacing = 10; // desired space between each bar
-  var scaleY = 10; // 10x scale on rect height
+//   var barSpacing = 10; // desired space between each bar
+//   var scaleY = 10; // 10x scale on rect height
 
-  // Create a 'barWidth' variable so that the bar chart spans the entire chartWidth.
-  var barWidth = (chartWidth - (barSpacing * (healthData.length - 1))) / healthData.length;
+//   // Create a 'barWidth' variable so that the bar chart spans the entire chartWidth.
+//   var barWidth = (chartWidth - (barSpacing * (healthData.length - 1))) / healthData.length;
 
-  // @TODO
-  // Create code to build the bar chart using the tvData.
-  chartGroup.selectAll(".bar")
+    // Create code to build the chart
+  chartGroup.selectAll("dot")
     .data(healthData)
     .enter()
-    .append("rect")
-    .classed("bar", true)
-    .attr("width", d => barWidth)
-    .attr("height", d => d.poverty * scaleY)
-    .attr("x", (d, i) => i * (barWidth + barSpacing))
-    .attr("y", d => chartHeight - d.hours * scaleY);
+    .append("circle")
+    .classed("scatter", true)
+    .attr("cx", function (d) { return d.poverty; } )
+    .attr("cy", function (d) { return d.obesity; } )
+    .attr("r", 1.5)
+    .style("fill", "#blue")
 }).catch(function(error) {
   console.log(error);
 });
