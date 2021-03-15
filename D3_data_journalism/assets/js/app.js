@@ -21,14 +21,6 @@ var svg = d3
   .attr("height", svgHeight)
   .attr("width", svgWidth);
 
-
-
-
-
-// // create axes
-// var yAxis = d3.axisLeft(yScale);
-// var xAxis = d3.axisBottom(xScale);
-
 // Append a group to the SVG area and shift ('translate') it to the right and down to adhere
 // to the margins set in the "chartMargin" object.
 var chartGroup = svg.append("g")
@@ -46,11 +38,10 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
   healthData.forEach(function(data) {
     data.poverty = +data.poverty;
     //data.povertyMoe = +data.povertyMoe;
-    data.obesity = +data.obesity;
-    data.abbr = data.abbr;        
+    data.obesity = +data.obesity;       
   });
 
-  //console.log(healthData.abbr);
+  //console.log(healthData, d => d.abbr);
 
   // scale x to chart width
     var xScale = d3.scaleLinear()
@@ -72,6 +63,23 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
   chartGroup.append("g")
     .call(leftAxis);
 
+    //Adding an axis label
+    chartGroup.append("text")             
+    .attr("class", "x label")
+    .style("text-anchor", "end")
+    .attr("x", chartWidth)
+    .attr("y", chartHeight - 6)
+    .text("Percent of Population in Poverty")
+    ;
+
+    chartGroup.append("text")             
+    .attr("class", "y label")
+    .style("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Percent of Population with Obesity")
+    ;
   chartGroup.append("g")
     .attr("transform", `translate(0, ${chartHeight})`)
     .call(bottomAxis);
@@ -90,7 +98,8 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     //.attr("width", d => chartWidth -xScale(d.poverty))
     //.attr("height", d => chartHeight - yScale(d.obesity));
 
-  // Code to creat the dot labels
+  // Code to create the dot labels
+  //this is not bring back the first 15 states for some reason
   chartGroup.selectAll("text")
     .data(healthData)
     .enter()
