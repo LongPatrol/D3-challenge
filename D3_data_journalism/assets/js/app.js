@@ -40,25 +40,26 @@ var chartGroup = svg.append("g")
 d3.csv("/assets/data/data.csv").then(function(healthData) {
 
   // Print data
-  //console.log(healthData);
+  console.log(healthData);
 
   // Cast the value to a number for number pieces 
   healthData.forEach(function(data) {
     data.poverty = +data.poverty;
     //data.povertyMoe = +data.povertyMoe;
     data.obesity = +data.obesity;
-    data.abbr = data.abbr;
-    
-    console.log(abbr);
+    data.abbr = data.abbr;        
   });
+
+  //console.log(healthData.abbr);
+
   // scale x to chart width
     var xScale = d3.scaleLinear()
-    .domain([0, d3.max(healthData, d => d.poverty)])
+    .domain([d3.min(healthData, d => d.poverty) -1, d3.max(healthData, d => d.poverty)+1])
     .range([0, chartWidth]);
 
   // scale y to chart height
     var yScale = d3.scaleLinear()
-    .domain([0, d3.max(healthData, d => d.obesity)])
+    .domain([d3.min(healthData, d => d.obesity) -1, d3.max(healthData, d => d.obesity) +1])
     .range([chartHeight, 0]);
 
   // Create two new functions passing our scales in as arguments
@@ -84,7 +85,7 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .classed("dot", true)
     .attr("cx", function (d) { return xScale(d.poverty); } )
     .attr("cy", function (d) { return yScale(d.obesity); } )
-    .attr("r", 7)
+    .attr("r", 12)
     .style("fill", "#009999")
     //.attr("width", d => chartWidth -xScale(d.poverty))
     //.attr("height", d => chartHeight - yScale(d.obesity));
@@ -97,6 +98,13 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .attr("x", function (d) { return xScale(d.poverty); } )
     .attr("y", function (d) { return yScale(d.obesity); } )
     .text( function(d) {return d.abbr})
+    .style("fill", "#000000")
+    .style("font-weight", "bold")
+    .style("font-size", "11")
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle");
+    // .attr('dx', -8)
+    // .attr('dy', 3); 
 
 }).catch(function(error) {
   console.log(error);
