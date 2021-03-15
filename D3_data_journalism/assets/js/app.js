@@ -53,7 +53,7 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     var xScale = d3.scaleLinear()
     .domain([0, d3.max(healthData, d => d.poverty)])
     .range([0, chartWidth]);
-    
+
   // scale y to chart height
     var yScale = d3.scaleLinear()
     .domain([0, d3.max(healthData, d => d.obesity)])
@@ -79,12 +79,12 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
     .enter()
     .append("circle")
     .classed("dot", true)
-    .attr("cx", function (d) { return d.poverty; } )
-    .attr("cy", function (d) { return d.obesity; } )
-    .attr("r", 1.5)
-    .style("fill", "#blue")
-    .attr("width", d => chartWidth -xScale(d.poverty))
-    .attr("height", d => chartHeight - yScale(d.obesity));
+    .attr("cx", function (d) { return xScale(d.poverty); } )
+    .attr("cy", function (d) { return yScale(d.obesity); } )
+    .attr("r", 7)
+    .style("fill", "#009999")
+    //.attr("width", d => chartWidth -xScale(d.poverty))
+    //.attr("height", d => chartHeight - yScale(d.obesity));
 
 }).catch(function(error) {
   console.log(error);
