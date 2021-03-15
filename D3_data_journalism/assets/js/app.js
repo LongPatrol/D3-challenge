@@ -52,7 +52,8 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
   // scale x to chart width
     var xScale = d3.scaleLinear()
     .domain([0, d3.max(healthData, d => d.poverty)])
-    .range([chartHeight, 0]);
+    .range([0, chartWidth]);
+    
   // scale y to chart height
     var yScale = d3.scaleLinear()
     .domain([0, d3.max(healthData, d => d.obesity)])
@@ -61,7 +62,7 @@ d3.csv("/assets/data/data.csv").then(function(healthData) {
   // Create two new functions passing our scales in as arguments
   // These will be used to create the chart's axes
   var bottomAxis = d3.axisBottom(xScale);
-  var leftAxis = d3.axisLeft(yScale).ticks(10);
+  var leftAxis = d3.axisLeft(yScale);
 
   // Append two SVG group elements to the chartGroup area,
   // and create the bottom and left axes inside of them
